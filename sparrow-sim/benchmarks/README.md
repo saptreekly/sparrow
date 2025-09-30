@@ -12,7 +12,8 @@ Two helper scripts live under `sparrow-sim/tools`:
 - `generate_qft_qasm.py` – emits an *n*-qubit Quantum Fourier Transform using
   only `u` and `cx` gates.
 - `generate_vqe_qasm.py` – emits a hardware-efficient VQE-style ansatz with
-  configurable depth/seed.
+  configurable depth/seed, or a chaotic Hadamard/CNOT stress-test circuit when
+  invoked with `--chaotic`.
 
 Examples:
 
@@ -22,6 +23,9 @@ python3 sparrow-sim/tools/generate_qft_qasm.py 16 --output qft_16.qasm
 
 # 20-qubit VQE circuit with 6 entangling layers
 python3 sparrow-sim/tools/generate_vqe_qasm.py 20 --depth 6 --seed 1337 --output vqe_20.qasm
+
+# 20-qubit chaotic stress-test circuit
+python3 sparrow-sim/tools/generate_vqe_qasm.py 20 --depth 8 --seed 42 --chaotic --output chaotic_20.qasm
 ```
 
 ## 2. Functional Validation (QFT)
@@ -74,8 +78,8 @@ tool (Matplotlib, gnuplot, Plotters, etc.).
 
 ## 4. AI Stress Test (Random Circuits)
 
-1. Generate a chaotic circuit (e.g., adapt the VQE generator to alternate
-   Hadamards and random CNOTs) for ~20 qubits.
+1. Generate a chaotic circuit (e.g., using `generate_vqe_qasm.py --chaotic`) for
+   ~20 qubits.
 2. Run predictive mode with verbose logging enabled:
 
    ```bash

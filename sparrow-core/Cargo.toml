@@ -1,0 +1,13 @@
+[package]
+name = "sparrow-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+num-complex = { version = "0.4", default-features = false }
+libm = { version = "0.2", default-features = false }
+log = "0.4"
+
+[dev-dependencies]
+plotters = "0.3"
+proptest = { version = "1.4", default-features = false, features = ["std"] }

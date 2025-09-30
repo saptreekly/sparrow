@@ -1,0 +1,27 @@
+WHITESPACE = _{ " " | "\t" | NEWLINE }
+NEWLINE = _{ "\r\n" | "\n" | "\r" }
+COMMENT = _{ "//" ~ (!NEWLINE ~ ANY)* }
+
+program = { SOI ~ header ~ (statement | COMMENT)* ~ EOI }
+header = { openqasm_decl ~ include_decl? }
+openqasm_decl = { ("OPENQASM" | "openqasm") ~ version ~ ";" }
+version = @{ ASCII_DIGIT+ ~ ("." ~ ASCII_DIGIT+)? }
+include_decl = { ("include" | "INCLUDE") ~ string ~ ";" }
+string = @{ "\"" ~ (!"\"" ~ ANY)* ~ "\"" }
+
+statement = { qreg_decl | gate_u | gate_cx | barrier }
+
+qreg_decl = { ("qreg" | "QREG") ~ ident ~ "[" ~ integer ~ "]" ~ ";" }
+barrier = { ("barrier" | "BARRIER") ~ qubit_list ~ ";" }
+qubit_list = { qubit_ref ~ ("," ~ qubit_ref)* }
+
+gate_u = { ("U" | "u") ~ "(" ~ angle ~ "," ~ angle ~ "," ~ angle ~ ")" ~ qubit_ref ~ ";" }
+gate_cx = { ("CX" | "cx") ~ qubit_ref ~ "," ~ qubit_ref ~ ";" }
+
+qubit_ref = { ident ~ "[" ~ integer ~ "]" }
+angle = @{ ("+" | "-")? ~ angle_token ~ ( ("*" | "/") ~ angle_token )* }
+angle_token = { ident | number }
+
+integer = @{ ASCII_DIGIT+ }
+number = @{ ASCII_DIGIT+ ~ ("." ~ ASCII_DIGIT*)? }
+ident = @{ ASCII_ALPHA ~ (ASCII_ALPHANUMERIC | "_")* }

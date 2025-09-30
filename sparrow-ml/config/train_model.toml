@@ -1,0 +1,25 @@
+[dataset]
+qubits = 20
+num_states = 1000
+min_non_zero = 16
+max_non_zero = 128
+label_threshold = 1e-10
+seed = 0x5151AACE
+
+[dataset.gate]
+type = "cnot"
+control = 5
+target = 2
+
+[training]
+epochs = 350
+learning_rate = 0.25
+l2_regularization = 5e-5
+test_ratio = 0.2
+probability_threshold = 0.02
+k_folds = 5
+cross_validation_seed = 0xABCD
+
+[output]
+model_path = "assets/splash_model.json"
+model_version = "0.2.0"
